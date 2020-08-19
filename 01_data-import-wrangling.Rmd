@@ -42,10 +42,6 @@ mtcars
 
 Along with plain text prose, which is what we are reading right now. We can then `knit` this to a PDF, an HTML file or a Notebook. We could have used an R script, which would have the file extension `.R`. Click `file` -> `New File` -> `R Script` to open an R script. Click `file` -> `New File` -> `R Notebook` to open an Rmarkdown Notebook.
 
-```{r}
-mtcars
-```
-
 
 
 ### Load the packages
@@ -73,7 +69,7 @@ library(janitor)
 
 What we will cover today:
 
-    + import an excel spreadsheet
+    + import an Excel spreadsheet
     + import a csv file
     + Remove rows with slice()
     + Pick columns by their names select()
@@ -85,7 +81,6 @@ What we will cover today:
     + pull apart dates with separate()
     + Pivot data from wide to long, tidy format with pivot_longer() 
     + group_by() changes the scope to operating group-by-group
-    + toggle from tibble to xts (and back)
     + Hadley reckons this covers about 90% of data wrangling in tidyverse
     
 Link to book R for Data Science
@@ -251,7 +246,6 @@ hpi_wrangled %>%
 
 What is tidy data?
 
-
 https://tidyr.tidyverse.org/
 
     + Each variable is in a column.
@@ -272,15 +266,15 @@ Converting from wide to tidy is not intuitive. It takes practice and trial/error
 ```{r}
 hpi_tidy <- 
   hpi_wrangled %>% 
-  select(date, contains("atlantic"), contains("central")) %>% 
+  select(date, contains("north"), contains("south")) %>% 
   # pivot_longer makes data long, or tidy
-  pivot_longer(-date, names_to = "region", values_to = "hpi") %>% 
-  group_by(region)
+  pivot_longer(-date, names_to = "division", values_to = "hpi") %>% 
+  group_by(division)
 
 hpi_untidied <- 
   hpi_tidy %>% 
   # pivot_wider makes data wide, or untidy
-  pivot_wider(names_from = "region", values_from = "hpi")
+  pivot_wider(names_from = "division", values_from = "hpi")
 ```
 
 Why is tidy data so useful?
@@ -315,14 +309,14 @@ We can add labels and count percentages by groups.
 
 ```{r}
 hpi_tidy %>% 
-  group_by(region) %>% 
+  group_by(division) %>% 
   mutate(pct_change = (hpi / lag(hpi)) - 1) %>%
   na.omit() %>%
   mutate(change_label = case_when(pct_change > 0  ~ "positive",
                                   pct_change <= 0  ~ "negative"
                                   )) %>% 
-count(change_label) %>% 
-mutate(percent = n/sum(n))
+  count(change_label) %>% 
+  mutate(percent = n/sum(n))
 ```
 
 
@@ -330,7 +324,7 @@ And finally a preview for next week:
 ```{r}
 library(ggplot2)
 
-ggplot(hpi_tidy, aes(x = date, y = hpi, color = region)) +
+ggplot(hpi_tidy, aes(x = date, y = hpi, color = division)) +
          geom_line()
 ```
 
