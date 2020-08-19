@@ -1,8 +1,6 @@
 ---
 title: "Data Import and Wrangling"
-output:
-  html_document:
-    df_print: paged
+output: html_notebook
 ---
 
 
@@ -59,19 +57,15 @@ If you are using R for the first time on this computer, you'll need to install a
 ```{r setup, message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, comment = NA)
 
-# install.packages("tidyverse")
-# install.packages("highcharter")
-# install.packages("corrr")
-# install.packages("plotly")
-# install.packages("scales")
-# install.packages("readxl")
-# install.packages("timetk")
-# install.packages("lubridate")
-# install.packages("janitor")
-# install.packages("xts")
+# install.packages(dplyr) 
+# install.packages(tidyr)
+# install.packages(readr)
+# install.packages(readxl)
+# install.packages(janitor)
 
 library(dplyr) 
 library(tidyr)
+library(readr)
 library(readxl)
 library(janitor)
 ```
@@ -122,7 +116,7 @@ Always, always, paste the full code into the script. Future you will thank past 
 ### From local Excel file
 
 ```{r, eval = FALSE}
-library(readxl)
+# library(readxl)
 
 hpi_from_excel <- read_excel("path to your local excel file")
 
@@ -134,7 +128,7 @@ hpi_from_excel <- read_excel("path to your local excel file")
 We can use `read_csv()` from `readr`.
 
 ```{r, eval = FALSE}
-library(readr)
+# library(readr)
 
 hpi_from_csv <- read_csv("path to your local csv file")
 
@@ -146,7 +140,7 @@ hpi_from_csv <- read_csv("path to your local csv file")
 From the internet or from local file, either way, RStudio needs a path to the excel or csv.
 
 ```{r}
-library(readxl)
+# library(readxl)
 
 url <- "https://www.fhfa.gov/DataTools/Downloads/Documents/HPI/HPI_PO_monthly_hist.xls"
 
@@ -207,16 +201,6 @@ We have our data object. Let's:
 9. use `unite()` from `tidyr` for combining columns
 10. use `case_when()` to add labels, and `between` as a short cut for x >= & x <=
 11. use `separate()` and `unite` to split and combine columns
-
-
-4. use `ymd()` and `parse_date_time` from `lubridate` to clean up the date
-5. 
-6. use `contains()` to choose columns
-
-8. 
-10. use `arrange()` from `dplyr` for ascending and `arrange(desc())` for descinding
-11. 
-12. 
 
 
 ```{r}
